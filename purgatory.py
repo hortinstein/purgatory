@@ -23,10 +23,12 @@ def get_time_left(seconds_left):
 
 # Main function to show the progress bar
 def main():
-    for elapsed in tqdm(range(elapsed_seconds, total_seconds + 1), initial=elapsed_seconds, total=total_seconds, desc="Progress", unit="s", dynamic_ncols=True):
-        days_left, months_left = get_time_left(total_seconds - elapsed)
-        tqdm.write(f'Days left: {days_left}, Months left: {months_left}')
-        time.sleep(1)
+    with tqdm(total=total_seconds, initial=elapsed_seconds, desc="Progress", unit="s", dynamic_ncols=True) as pbar:
+        for elapsed in range(elapsed_seconds, total_seconds + 1):
+            days_left, months_left = get_time_left(total_seconds - elapsed)
+            pbar.set_description(f'Days left: {days_left} | Months left: {months_left} | Progress')
+            pbar.update(1)
+            time.sleep(1)
 
 if __name__ == "__main__":
     main()
